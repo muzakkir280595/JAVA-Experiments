@@ -10,7 +10,7 @@ public class Dealership {
 		myCar.model = "Camry";
 		myCar.year = 2022;
 		
-		System.out.println("My first car is a "+myCar.brand+""+myCar.model);
+		System.out.println("My first car is a "+myCar.brand+" "+myCar.model);
 		myCar.startEngine();
 		
 		//Creating the second Car Objects.
@@ -19,7 +19,7 @@ public class Dealership {
 		newCar.model = "Civic";
 		newCar.year = 2024;
 		
-		System.out.println("My second car is a "+myCar.brand+""+myCar.model);
+		System.out.println("My second car is a "+newCar.brand+" "+newCar.model);
 		newCar.drive();
 	}
 }
