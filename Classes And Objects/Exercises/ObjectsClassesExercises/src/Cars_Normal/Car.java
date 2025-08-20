@@ -1,4 +1,4 @@
-package Cars_Dealership_Normal;
+package Cars_Normal;
 
 //Car.java
 public class Car {
