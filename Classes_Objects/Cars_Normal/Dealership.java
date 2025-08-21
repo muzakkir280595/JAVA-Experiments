@@ -1,6 +1,5 @@
 package Cars_Normal;
 
-//Dealership.java
 public class Dealership {
 
 	public static void main (String[] args) {
