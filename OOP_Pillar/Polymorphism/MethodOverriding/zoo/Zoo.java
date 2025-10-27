@@ -1,3 +1,5 @@
+package zoo;
+
 // Superclass
 class Animal {
     public void makeSound() {
