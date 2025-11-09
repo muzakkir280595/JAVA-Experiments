@@ -1,0 +1,130 @@
+Perfect — your inheritance setup is already solid 👍
+
+Now, let’s introduce the `super` keyword and understand what it does.
+
+---
+
+### 🔹 What is `super` in Java?
+
+`super` is used to **refer to the parent (superclass) members** — either **fields**, **methods**, or **constructors**.
+
+There are **3 main uses** of `super`:
+
+1. **Call the parent class method** (if it’s overridden in the subclass)
+2. **Access the parent class variable** (if it’s hidden by a subclass variable)
+3. **Call the parent class constructor** (to initialize superclass attributes)
+
+---
+
+### 🧛 Modified Example with `super`
+
+Here’s your updated code with `super` in use:
+
+#### **Enemy.java**
+
+```java
+package OOP_Pillar.Keep_On_Coding_Exercises.Inheritances;
+
+public class Enemy {
+
+    int health = 100;
+
+    public void talk() {
+        System.out.println("I am an enemy! You better RUN!!!");
+    } 
+
+    public void showHealth() {
+        System.out.println("Enemy Health: " + health);
+    }
+}
+```
+
+#### **Vampire.java**
+
+```java
+package OOP_Pillar.Keep_On_Coding_Exercises.Inheritances;
+
+public class Vampire extends Enemy {
+
+    int health = 150; // This hides the parent's 'health' variable
+
+    @Override
+    public void talk() {
+        super.talk(); // 👈 Calls the 'talk()' method from Enemy
+        System.out.println("I Want To Suck Your Blood!");
+    }
+
+    public void showBothHealth() {
+        System.out.println("Vampire Health: " + health);
+        System.out.println("Enemy Health (using super): " + super.health); // 👈 Access parent's variable
+    }
+
+    // 👇 Call parent constructor example (if Enemy had one)
+    public Vampire() {
+        super(); // Calls Enemy's constructor (optional if parent has default)
+    }
+}
+```
+
+#### **Main.java**
+
+```java
+package OOP_Pillar.Keep_On_Coding_Exercises.Inheritances;
+
+class Main {
+
+    public static void main(String[] args) {
+        
+        Vampire vampire = new Vampire();
+        vampire.talk();
+        vampire.showBothHealth();
+    }
+}
+```
+
+---
+
+### 🧠 Explanation
+
+#### 1. **`super.talk()`**
+
+* Normally, when you override a method (like `talk()`), the subclass method *replaces* the parent’s.
+* But if you still want to use the parent’s version, call it with `super.talk()`.
+
+  **Output:**
+
+  ```
+  I am an enemy! You better RUN!!!
+  I Want To Suck Your Blood!
+  ```
+
+#### 2. **`super.health`**
+
+* The subclass `Vampire` also has its own `health` variable.
+* If both parent and child have variables with the same name, you can use `super.variableName` to access the parent’s.
+
+  **Output:**
+
+  ```
+  Vampire Health: 150
+  Enemy Health (using super): 100
+  ```
+
+#### 3. **`super()` in Constructor**
+
+* If the parent class has a constructor that needs to run first (e.g., to initialize something), you can explicitly call it using `super()` inside the child constructor.
+* Java automatically adds `super();` if you don’t write it, **but only if the parent has a no-argument constructor**.
+
+---
+
+### 🧩 Summary Table
+
+| Usage                | Example         | Meaning                                |
+| -------------------- | --------------- | -------------------------------------- |
+| `super.methodName()` | `super.talk();` | Calls the parent’s version of a method |
+| `super.variableName` | `super.health`  | Refers to the parent’s variable        |
+| `super()`            | `super();`      | Calls the parent’s constructor         |
+
+---
+
+

@@ -1,0 +1,5 @@
+Inheritances:
+
+-Is very powerful and simple.
+-Class that is derived from existing class: subclass, extended class and child class.
+-Class which derived from subclass: super class, parent class and base class.

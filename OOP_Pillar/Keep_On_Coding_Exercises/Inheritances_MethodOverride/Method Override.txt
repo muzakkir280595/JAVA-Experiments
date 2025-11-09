@@ -1,0 +1,114 @@
+Sure! 👇 Let’s go through **method overriding** step-by-step using your `Enemy` and `Vampire` classes.
+
+---
+
+### 🧩 Your Current Setup
+
+You already have **inheritance** working here:
+
+```java
+public class Vampire extends Enemy {
+```
+
+This means `Vampire` inherits all non-private properties and methods from `Enemy`, including `talk()`.
+
+But since `Vampire` defines **its own** `talk()` method with the *same signature*, this is called **method overriding**.
+
+---
+
+### ✅ Adding the `@Override` Annotation
+
+Here’s how your `Vampire` class should look with the proper override annotation:
+
+```java
+package OOP_Pillar.Keep_On_Coding_Exercises.Inheritances;
+
+public class Vampire extends Enemy {
+
+    @Override
+    public void talk() {
+        System.out.println("I Want To Suck Your Blood");
+    }
+}
+```
+
+---
+
+### 💡 What `@Override` Does
+
+* `@Override` tells Java that this method is **intended to override** a method in the parent (`Enemy`).
+* It makes your code **safer**, because if you mistype the method name or use the wrong parameters, the compiler will give you an **error** instead of silently treating it as a new method.
+
+For example, if you accidentally wrote:
+
+```java
+public void Talk() {  // capital T — not the same as 'talk'
+    System.out.println("I Want To Suck Your Blood");
+}
+```
+
+Without `@Override`, Java would think it’s a new method, not an override.
+With `@Override`, it will show a **compile error** — saving you from bugs.
+
+---
+
+### 🧠 How Method Overriding Works in Memory
+
+When you call:
+
+```java
+Vampire vampire = new Vampire();
+vampire.talk();
+```
+
+Java looks for the `talk()` method starting **from the most specific class (Vampire)**.
+
+* If `Vampire` defines `talk()`, it uses that one.
+* If not, it goes up to the **parent class (`Enemy`)** and uses that one instead.
+
+So in this case, output is:
+
+```
+I Want To Suck Your Blood
+```
+
+If you **remove** the `talk()` method from `Vampire`, the parent’s version runs:
+
+```
+I am an enemy!. You better RUN!!!
+```
+
+---
+
+### 🧩 Example Showing Both Parent and Child
+
+If you still want to use the parent’s version inside the child, you can call it using `super`:
+
+```java
+@Override
+public void talk() {
+    super.talk();  // calls Enemy's version
+    System.out.println("I Want To Suck Your Blood");
+}
+```
+
+Output:
+
+```
+I am an enemy!. You better RUN!!!
+I Want To Suck Your Blood
+```
+
+---
+
+### 🔍 Summary
+
+| Concept                | Description                                                                                  |
+| ---------------------- | -------------------------------------------------------------------------------------------- |
+| **Method Overriding**  | Redefining a parent method in a child class with the same name, parameters, and return type. |
+| **@Override**          | Ensures the method correctly overrides a parent method (gives compiler protection).          |
+| **super.methodName()** | Calls the parent class version of the method.                                                |
+| **Benefit**            | Enables polymorphism — same method name, different behaviors depending on the object type.   |
+
+---
+

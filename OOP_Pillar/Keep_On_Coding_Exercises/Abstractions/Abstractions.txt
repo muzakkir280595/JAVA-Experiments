@@ -1,0 +1,5 @@
+Abstractions
+
+In abstraction:
+-we just care about calling the method.
+-We don't care about the underlying implementation.
