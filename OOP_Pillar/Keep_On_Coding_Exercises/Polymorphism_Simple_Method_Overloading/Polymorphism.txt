@@ -1,0 +1,12 @@
+Method overloading in Java allows a class to have multiple methods with the same name, provided that their method signatures are different. The method signature is determined by the number, type, and order of the parameters. The return type alone is not part of the method signature and cannot be used to differentiate overloaded methods.
+Here are the ways to achieve method overloading: by changing the number of arguments.
+
+    class Calculator {
+        public int add(int a, int b) {
+            return a + b;
+        }
+
+        public int add(int a, int b, int c) {
+            return a + b + c;
+        }
+    }

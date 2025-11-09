@@ -1,0 +1,7 @@
+Polymorphism means "many forms", and it occurs when we have many classes that are related to each other by inheritance.
+
+Method Overriding:
+method overriding (same method name, different behavior in subclasses).
+
+Method Overriding
+Happens in different classes (parent & subclass).
