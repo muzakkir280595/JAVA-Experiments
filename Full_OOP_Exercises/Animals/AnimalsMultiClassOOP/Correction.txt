@@ -1,0 +1,184 @@
+Question:
+Ok can you help me to differentiate with my one. I cannot run it successfully.
+
+Animal class:
+package Full_OOP_Exercises.Animals.AnimalsMultiClassOOP;
+
+public class Animal {
+
+    private String name;
+
+    public void animal(String name) {
+        this.name = name;
+    }
+
+        public String getName() {
+        return name;
+    }
+
+    public void makeSound() {
+        System.out.println("says: I'm An Alien!");
+    }
+
+    public void eat() {
+        System.out.println(name + " is eating.");
+    }   
+
+}
+
+
+Bird class:
+package Full_OOP_Exercises.Animals.AnimalsMultiClassOOP;
+
+public class Bird extends Animal{
+
+    public Bird(String name) {
+        super(name);
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println(getName() + " says: Chirp chirp!");
+    }
+
+    public void fly() {
+        System.out.println(getName() + " is flying!");
+    }
+
+}
+
+Cat class:
+package Full_OOP_Exercises.Animals.AnimalsMultiClassOOP;
+
+public class Cat extends Animal{
+
+public cat(String name){
+        super(name);
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println(getName() + " says: Meow Meow!");
+    }
+
+    public void scratch() {
+        System.out.println(getName() + " is scratching the sofa.");
+    }     
+
+
+}
+
+
+dog class:
+package Full_OOP_Exercises.Animals.AnimalsMultiClassOOP;
+
+public class Dog extends Animal{
+    
+    public dog(String name){
+        super(name);
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println(getName() + " says: Woof woof!");
+    }
+
+    public void fetch() {
+        System.out.println(getName() + " is fetching the ball.");
+    }     
+
+
+}
+
+
+Main class:
+package Full_OOP_Exercises.Animals.AnimalsMultiClassOOP;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Animal dog = new Dog("Buddy");
+        Animal cat = new Cat("Misty");
+        Animal bird = new Bird("Tweety");
+
+        dog.makeSound();
+        cat.makeSound();
+        bird.makeSound();
+
+        dog.eat();
+        cat.eat();
+        bird.eat();
+
+        ((Dog) dog).fetch();
+        ((Cat) cat).scratch();
+        ((Bird) bird).fly();
+    }
+}
+
+Answer:
+
+That's a fantastic effort\! You're very close to having a fully functional, multi-class Java project.
+
+You are running into an issue with your **`Animal` class constructor** and a few **capitalization problems** in your subclasses.
+
+Here are the fixes for your files and a quick explanation of why the original code wouldn't compile or run correctly:
+
+-----
+
+## 1\. The Core Fix: `Animal.java`
+
+The primary issue is in your `Animal` class. The method named `animal` is not actually a constructor because it has a `void` return type. It should be defined without a return type and have the same name as the class.
+
+### Fixed `Animal.java`
+
+http://googleusercontent.com/immersive_entry_chip/0
+
+-----
+
+## 2\. Fixing Subclass Constructors
+
+In Java, class names start with a capital letter, and the constructor must match this capitalization.
+
+### Fixed `Cat.java`
+
+http://googleusercontent.com/immersive_entry_chip/1
+
+### Fixed `Dog.java`
+
+http://googleusercontent.com/immersive_entry_chip/2
+
+-----
+
+## 3\. Reviewing `Bird.java` and `Main.java`
+
+Your `Bird.java` and `Main.java` files were already correct (assuming the fixes in `Animal.java` are applied). I've included them below for completeness.
+
+### `Bird.java` (No changes needed)
+
+http://googleusercontent.com/immersive_entry_chip/3
+
+### `Main.java` (No changes needed)
+
+http://googleusercontent.com/immersive_entry_chip/4
+
+-----
+
+## Summary of Compilation Errors and Fixes
+
+1.  **Original `Animal`:**
+    ```java
+    public void animal(String name) { ... }
+        This is just a regular method named `animal`, not a constructor. When Java tries to compile your subclasses, it cannot find the required default constructor in `Animal`, leading to an error like: **"Implicit super constructor Animal() is undefined."**
+    **Fix:** Change the method to a proper constructor: `public Animal(String name) { ... }`.
+
+    ```
+2.  **Original Subclasses:**
+    ```java
+    public cat(String name){ ... } // in Cat.java
+    public dog(String name){ ... } // in Dog.java
+        Constructor names must perfectly match the class name, including capitalization.
+    **Fix:** Change to `public Cat(String name)` and `public Dog(String name)`.
+
+    ```
+
+With these changes, your program should compile and run perfectly\! Let me know if you'd like to explore making the `Animal` class `abstract` again, which is good practice for base classes\!

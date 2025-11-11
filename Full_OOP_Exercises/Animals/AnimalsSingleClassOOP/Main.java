@@ -1,4 +1,4 @@
-package Full_OOP_Exercises.AnimalsSingleClassOOP;
+package Full_OOP_Exercises.Animals.AnimalsSingleClassOOP;
 
 //This is full OOP exercise with single main class file. Soon will be split into multiple files by naming Main class as Runner.
 

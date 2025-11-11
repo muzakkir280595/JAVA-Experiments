@@ -128,3 +128,147 @@ class Main {
 ---
 
 
+
+
+More Example:
+Excellent question again 👏 — and this is a **common confusion** for beginners in Java OOP.
+
+Let’s break it down simply 👇
+
+---
+
+## 🧩 Short answer
+
+You **can’t** use `super.Animal` (or `super.animals`) because:
+
+> 🔹 `super` is **not an object** — it’s a **keyword** used to refer to the *parent class’s members*, not the class itself.
+
+So:
+
+* ✅ `super()` → calls **parent’s constructor**
+* ✅ `super.someMethod()` → calls **a method from the parent class**
+* ❌ `super.Animal` → invalid syntax; `super` doesn’t refer to the class name
+
+---
+
+## 🧠 Think of `super` like this:
+
+`super` gives you **access to what’s inside the parent**,
+not the **parent itself** as a type.
+
+Example:
+
+```java
+class Animal {
+    public void eat() {
+        System.out.println("Animal is eating.");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void eat() {
+        System.out.println("Dog is eating.");
+    }
+
+    public void showEating() {
+        super.eat(); // ✅ calls the parent (Animal)’s eat() method
+        eat();       // ✅ calls the child (Dog)’s eat() method
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        d.showEating();
+    }
+}
+```
+
+### 🖥️ Output:
+
+```
+Animal is eating.
+Dog is eating.
+```
+
+Here:
+
+* `super.eat()` → explicitly calls the **parent’s version** of `eat()`.
+* `eat()` → calls the **child’s overridden** method.
+
+---
+
+## ⚙️ So why not `super.Animal`?
+
+Because in Java:
+
+* `super` refers to **the parent object of the current instance**, not the **class**.
+* You can’t write `super.Animal` — `Animal` is the *class name*, not a member of the superclass.
+
+So this is ❌ invalid:
+
+```java
+super.Animal();   // ❌ wrong — you can’t call a class like this
+super.Animal;     // ❌ wrong — not a field or method
+```
+
+Instead, you should use:
+
+```java
+super();          // ✅ calls parent constructor
+super.someMethod(); // ✅ calls parent method
+```
+
+---
+
+### 🧩 Example with Constructor (`super(name)`)
+
+```java
+class Animal {
+    private String name;
+
+    public Animal(String name) {
+        this.name = name;
+        System.out.println("Animal constructor called for: " + name);
+    }
+}
+
+class Dog extends Animal {
+    public Dog(String name) {
+        super(name); // ✅ correct way to call the parent constructor
+        System.out.println("Dog constructor called for: " + name);
+    }
+}
+```
+
+Here, `super(name)` calls the **constructor of the `Animal` class**, not `super.Animal(name)`.
+
+---
+
+## ✅ In Short
+
+| Syntax            | Meaning                                      | Valid? |
+| ----------------- | -------------------------------------------- | ------ |
+| `super()`         | Calls parent constructor                     | ✅      |
+| `super(args)`     | Calls parent constructor with parameters     | ✅      |
+| `super.method()`  | Calls a parent method                        | ✅      |
+| `super.field`     | Accesses a parent field (if not private)     | ✅      |
+| `super.ClassName` | ❌ Invalid — `super` is not a class reference | ❌      |
+
+---
+
+### 🧠 Analogy
+
+Think of `super` as saying:
+
+> “Use my parent’s version of this thing.”
+
+Not:
+
+> “Access my parent *class* directly.”
+
+---
+
+Would you like me to show how `super` behaves **in multilevel inheritance** (e.g. `Animal → Mammal → Dog`)? It makes the concept even clearer.
+
