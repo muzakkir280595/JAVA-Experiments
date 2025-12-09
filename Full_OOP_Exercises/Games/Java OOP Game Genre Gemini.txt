@@ -1,0 +1,243 @@
+
+
+-----
+
+## 💻 Java OOP Game Genre Hierarchy Example
+
+We will create a hierarchy starting with a base `Game` class and then specialized genres like `RPG` and `StrategyGame`.
+
+### 1\. Base Class: `Game`
+
+This **abstract class** defines the common properties and behaviors for *all* games.
+
+**`Game.java`**
+
+```java
+/**
+ * The base abstract class for all games.
+ * Provides common properties and an abstract method for polymorphism.
+ */
+public abstract class Game {
+    // Encapsulation: Attributes are private and accessed via getters/setters
+    private String title;
+    private int releaseYear;
+    private String developer;
+
+    // Constructor
+    public Game(String title, int releaseYear, String developer) {
+        this.title = title;
+        this.releaseYear = releaseYear;
+        this.developer = developer;
+    }
+
+    // Common non-abstract method
+    public void startGame() {
+        System.out.println(title + " is starting...");
+    }
+
+    // Abstraction/Polymorphism: A method that MUST be implemented by all subclasses,
+    // but the implementation details are unique to each genre.
+    public abstract void describeCoreMechanic();
+
+    // Getters (and optional setters for mutability)
+    public String getTitle() {
+        return title;
+    }
+
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+
+    public String getDeveloper() {
+        return developer;
+    }
+
+    // Optional: Overriding toString for easy object description
+    @Override
+    public String toString() {
+        return "Game: " + title + " (" + releaseYear + ") by " + developer;
+    }
+}
+```
+
+### 2\. Interface: `Pausable`
+
+This **interface** defines a contract for any game that can be paused. This demonstrates a flexible form of Abstraction and allows for **multiple inheritance of type**.
+
+**`Pausable.java`**
+
+```java
+/**
+ * An interface for any object that can be paused and resumed.
+ * A non-Game class could also implement this!
+ */
+public interface Pausable {
+    void pause();
+    void resume();
+}
+```
+
+### 3\. Subclass: `RPG` (Role-Playing Game)
+
+This class **inherits** from `Game` and **implements** the `Pausable` interface.
+
+**`RPG.java`**
+
+```java
+/**
+ * A concrete subclass for Role-Playing Games.
+ */
+public class RPG extends Game implements Pausable {
+    private boolean turnBased; // RPG-specific attribute
+
+    public RPG(String title, int releaseYear, String developer, boolean turnBased) {
+        // Calls the superclass (Game) constructor
+        super(title, releaseYear, developer);
+        this.turnBased = turnBased;
+    }
+
+    // Polymorphism: Implementing the abstract method from Game
+    @Override
+    public void describeCoreMechanic() {
+        System.out.println("Mechanic: Focuses on character progression, inventory, and " + 
+                           (turnBased ? "turn-based combat." : "real-time combat."));
+    }
+
+    // Implementing the Pausable interface methods
+    @Override
+    public void pause() {
+        System.out.println(getTitle() + " has been paused. Press 'ESC' to resume.");
+    }
+
+    @Override
+    public void resume() {
+        System.out.println(getTitle() + " is resuming action!");
+    }
+    
+    // RPG-specific method
+    public void levelUp() {
+        System.out.println("Character in " + getTitle() + " gained a level!");
+    }
+}
+```
+
+### 4\. Subclass: `StrategyGame`
+
+This class **inherits** from `Game` but **does not** implement `Pausable`, showing flexibility in design.
+
+**`StrategyGame.java`**
+
+```java
+/**
+ * A concrete subclass for Strategy Games.
+ */
+public class StrategyGame extends Game {
+    private String resourceType; // Strategy-specific attribute
+
+    public StrategyGame(String title, int releaseYear, String developer, String resourceType) {
+        // Calls the superclass (Game) constructor
+        super(title, releaseYear, developer);
+        this.resourceType = resourceType;
+    }
+
+    // Polymorphism: Implementing the abstract method from Game
+    @Override
+    public void describeCoreMechanic() {
+        System.out.println("Mechanic: Focuses on resource management (" + resourceType + 
+                           ") and tactical unit deployment.");
+    }
+    
+    // StrategyGame-specific method
+    public void buildBase() {
+        System.out.println(getTitle() + ": New base structure deployed.");
+    }
+}
+```
+
+### 5\. Main Application: `GameLauncher`
+
+This class demonstrates how to use the objects and principles of **Polymorphism** and **Abstraction**.
+
+**`GameLauncher.java`**
+
+```java
+public class GameLauncher {
+    public static void main(String[] args) {
+        // Create objects of the specialized classes
+        RPG myRpg = new RPG("Epic Quest 3", 2024, "Studio A", true);
+        StrategyGame myStrategy = new StrategyGame("Galactic Empire", 2023, "Dev Team X", "Ore and Gas");
+
+        // --- Polymorphism in Action ---
+
+        // A list of games (using the common Game type)
+        Game[] gameLibrary = {myRpg, myStrategy};
+
+        System.out.println("--- 🎮 Game Library Check ---");
+        for (Game game : gameLibrary) {
+            System.out.println(game); // Uses Game's toString()
+            game.startGame(); // Uses Game's common method
+            // Uses the method implemented specifically by the subclass (Polymorphism)
+            game.describeCoreMechanic(); 
+            System.out.println("----------------------------");
+        }
+
+        // --- Casting and Interface Use ---
+
+        System.out.println("\n--- ⏸ Pausable Demonstration ---");
+        
+        // You can check if a Game object is also Pausable
+        for (Game game : gameLibrary) {
+            // Check the type at runtime: a core OOP concept
+            if (game instanceof Pausable) {
+                System.out.println(game.getTitle() + " is Pausable!");
+                
+                // Cast the Game object to the Pausable interface type
+                Pausable pausableGame = (Pausable) game;
+                pausableGame.pause(); // Calls the RPG's pause implementation
+                
+            } else {
+                System.out.println(game.getTitle() + " cannot be paused.");
+            }
+        }
+        
+        // Call a genre-specific method (requires using the specific class type)
+        System.out.println("\n--- Calling Specific Methods ---");
+        myRpg.levelUp();
+        myStrategy.buildBase();
+    }
+}
+```
+
+### Output of `GameLauncher`
+
+```
+--- 🎮 Game Library Check ---
+Game: Epic Quest 3 (2024) by Studio A
+Epic Quest 3 is starting...
+Mechanic: Focuses on character progression, inventory, and turn-based combat.
+----------------------------
+Game: Galactic Empire (2023) by Dev Team X
+Galactic Empire is starting...
+Mechanic: Focuses on resource management (Ore and Gas) and tactical unit deployment.
+----------------------------
+
+--- ⏸ Pausable Demonstration ---
+Epic Quest 3 is Pausable!
+Epic Quest 3 has been paused. Press 'ESC' to resume.
+Galactic Empire cannot be paused.
+
+--- Calling Specific Methods ---
+Character in Epic Quest 3 gained a level!
+Galactic Empire: New base structure deployed.
+```
+
+## 🔑 OOP Principles Summary
+
+This example uses all four major OOP concepts:
+
+1.  **Encapsulation:** The attributes (`title`, `releaseYear`, `developer`, `turnBased`, `resourceType`) are `private` and accessed only through public methods (`getTitle()`, etc.), protecting the object's state.
+2.  **Inheritance:** `RPG` and `StrategyGame` *inherit* from the `Game` class, reusing the `startGame()` method and the common attributes.
+3.  **Abstraction:** The `Game` class is `abstract` and forces subclasses to implement `describeCoreMechanic()`. The `Pausable` interface is a pure form of abstraction (a contract).
+4.  **Polymorphism:**
+      * The `describeCoreMechanic()` method behaves differently in `RPG` and `StrategyGame`, despite being called through a `Game` reference.
+      * The `Game[]` array holds objects of different types (`RPG`, `StrategyGame`) that are treated as the common base type (`Game`).

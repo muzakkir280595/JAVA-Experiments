@@ -1,0 +1,216 @@
+
+---
+
+# 🚀 **OOP in Java — Complete Beginner-Friendly Guide**
+
+Java is designed around **Object-Oriented Programming (OOP)**.
+OOP helps you structure code into **objects** — each representing something with **data** (variables) and **behaviour** (methods).
+
+There are **4 main OOP pillars**:
+
+1. **Encapsulation**
+2. **Inheritance**
+3. **Polymorphism**
+4. **Abstraction**
+
+Let’s go through each with examples.
+
+---
+
+# 🧱 1. **Classes & Objects**
+
+A **class** = blueprint
+An **object** = real thing created from the blueprint
+
+### Example:
+
+```java
+class Car {
+    String brand;
+    int year;
+
+    void drive() {
+        System.out.println(brand + " is driving.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Car myCar = new Car();  // object
+        myCar.brand = "Toyota"; // setting attributes
+        myCar.year = 2020;
+
+        myCar.drive();          // calling method
+    }
+}
+```
+
+**Output:**
+
+```
+Toyota is driving.
+```
+
+---
+
+# 🔐 2. **Encapsulation (Data Hiding)**
+
+Encapsulation = Keeping variables **private** and exposing them using **public getters and setters**.
+
+### Example:
+
+```java
+class BankAccount {
+    private double balance; // hidden data
+
+    public void deposit(double amount) {
+        balance += amount;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        BankAccount acc = new BankAccount();
+        acc.deposit(500);
+        System.out.println(acc.getBalance());
+    }
+}
+```
+
+---
+
+# 👨‍👦 3. **Inheritance (Reusing Code)**
+
+Child class inherits from parent class using `extends`.
+
+### Example:
+
+```java
+class Animal {
+    void eat() {
+        System.out.println("Animal eats.");
+    }
+}
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("Dog barks.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        d.eat();   // from parent
+        d.bark();  // own method
+    }
+}
+```
+
+---
+
+# 🔀 4. **Polymorphism (Many Forms)**
+
+Same method name behaves differently depending on object type.
+
+### Types of Polymorphism:
+
+✔ **Compile-time** (Method Overloading)
+✔ **Runtime** (Method Overriding)
+
+---
+
+## ✔ A) Method Overloading (Same name, different parameters)
+
+```java
+class Calculator {
+    int add(int a, int b) { return a + b; }
+    int add(int a, int b, int c) { return a + b + c; }
+}
+```
+
+---
+
+## ✔ B) Method Overriding (Child changes parent behaviour)
+
+```java
+class Animal {
+    void sound() { System.out.println("Animal makes sound"); }
+}
+
+class Cat extends Animal {
+    @Override
+    void sound() { System.out.println("Meow"); }
+}
+```
+
+---
+
+# 🎭 Polymorphism with `instanceof` (Relates to your earlier example)
+
+Your earlier snippet:
+
+```java
+for (Animal a : animals) {
+    a.makeSound();
+    if (a instanceof Dog) {
+        ((Dog) a).fetch();
+    } else if (a instanceof Cat) {
+        ((Cat) a).scratch();
+    } else if (a instanceof Bird) {
+        ((Bird) a).fly();
+    }
+}
+```
+
+This is **runtime polymorphism**:
+
+* `a.makeSound()` runs the **overridden** version in Dog/Cat/Bird.
+* `instanceof` checks the actual object type.
+
+---
+
+# 🧩 5. **Abstraction (Hide complex logic)**
+
+Achieved using:
+
+✔ **Abstract classes**
+✔ **Interfaces**
+
+---
+
+## ✔ Abstract Class Example
+
+```java
+abstract class Shape {
+    abstract void draw(); // no body
+}
+
+class Circle extends Shape {
+    void draw() {
+        System.out.println("Drawing circle");
+    }
+}
+```
+
+---
+
+## ✔ Interface Example
+
+```java
+interface Engine {
+    void start();
+}
+
+class Car implements Engine {
+    public void start() {
+        System.out.println("Car engine started");
+    }
+}
+```
+
+--
