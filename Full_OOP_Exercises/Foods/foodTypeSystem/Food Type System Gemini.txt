@@ -1,0 +1,215 @@
+##🍽️ OOP Java Example: Food Type SystemThis example models different types of food (e.g., Fruits, Vegetables, and Meats) extending a base `FoodItem` class.
+
+###1. Abstraction and Inheritance: The Base ClassWe start with an **abstract class** called `FoodItem`. This class defines the common properties and behaviors that all food items must have, but it cannot be instantiated directly (Abstraction).
+
+```java
+/**
+ * 1. Abstraction: Cannot be instantiated directly.
+ * 2. Inheritance: All specific food types will extend this class.
+ */
+public abstract class FoodItem {
+    // 3. Encapsulation: Fields are private, access via getters/setters.
+    private String name;
+    private double caloriesPer100g;
+    private boolean isVegetarian;
+
+    // Constructor for the base class
+    public FoodItem(String name, double caloriesPer100g, boolean isVegetarian) {
+        this.name = name;
+        this.caloriesPer100g = caloriesPer100g;
+        this.isVegetarian = isVegetarian;
+    }
+
+    // Abstract method: Must be implemented by all subclasses (Polymorphism)
+    public abstract void describeFoodType();
+
+    // Concrete method: Common behavior for all food items
+    public void printNutritionInfo() {
+        System.out.println("--- " + this.name + " ---");
+        System.out.println("Calories (per 100g): " + this.caloriesPer100g);
+        System.out.println("Is Vegetarian: " + (this.isVegetarian ? "Yes" : "No"));
+    }
+
+    // Getters and Setters (Encapsulation)
+    public String getName() { return name; }
+    public double getCaloriesPer100g() { return caloriesPer100g; }
+    public boolean isVegetarian() { return isVegetarian; }
+
+    public void setName(String name) { this.name = name; }
+    // Setter for calories (with basic validation)
+    public void setCaloriesPer100g(double caloriesPer100g) {
+        if (caloriesPer100g >= 0) {
+            this.caloriesPer100g = caloriesPer100g;
+        }
+    }
+}
+
+```
+
+---
+
+###2. Subclasses: Specific Food ImplementationsThese classes **inherit** from `FoodItem` and provide their own specific implementation for the `describeFoodType()` method (**Polymorphism**).
+
+####A. `Fruit` Class```java
+public class Fruit extends FoodItem {
+    private boolean isSweet; // Specific field for Fruit
+
+    public Fruit(String name, double caloriesPer100g, boolean isSweet) {
+        // Calls the constructor of the base class (FoodItem)
+        super(name, caloriesPer100g, true); // Fruits are always vegetarian
+        this.isSweet = isSweet;
+    }
+
+    // Polymorphism: Implementation of the abstract method
+    @Override
+    public void describeFoodType() {
+        System.out.println(getName() + " is a type of **Fruit**.");
+        System.out.println("It's typically consumed as a snack or dessert.");
+    }
+
+    // Specific method for Fruit
+    public void printSweetness() {
+        System.out.println("Sweetness: " + (isSweet ? "High" : "Low"));
+    }
+}
+
+```
+
+####B. `Meat` Class```java
+public class Meat extends FoodItem {
+    private String cutType; // Specific field for Meat
+
+    public Meat(String name, double caloriesPer100g, String cutType) {
+        // Calls the constructor of the base class (FoodItem)
+        super(name, caloriesPer100g, false); // Meats are never vegetarian
+        this.cutType = cutType;
+    }
+
+    // Polymorphism: Implementation of the abstract method
+    @Override
+    public void describeFoodType() {
+        System.out.println(getName() + " is a type of **Meat**.");
+        System.out.println("It is a primary source of protein.");
+    }
+
+    // Specific method for Meat
+    public void cook() {
+        System.out.println(getName() + " is being cooked using a high-heat method.");
+    }
+}
+
+```
+
+---
+
+###3. Interface: A Shared ContractWe can define a contract using an **interface** for food items that can be part of a "main course." This demonstrates **Abstraction** and allows different classes to share a capability.
+
+```java
+/**
+ * Abstraction: Defines a contract for classes that can be used as a main component.
+ */
+public interface MainComponent {
+    void prepareMainDish();
+    // A constant in the interface
+    String PREP_NOTE = "Requires washing and chopping.";
+}
+
+```
+
+####C. `Vegetable` Class (Implementing an Interface)```java
+public class Vegetable extends FoodItem implements MainComponent {
+    private String color; // Specific field for Vegetable
+
+    public Vegetable(String name, double caloriesPer100g, String color) {
+        super(name, caloriesPer100g, true); // Vegetables are always vegetarian
+        this.color = color;
+    }
+
+    // Polymorphism: Implementation of the abstract method from FoodItem
+    @Override
+    public void describeFoodType() {
+        System.out.println(getName() + " is a type of **Vegetable**.");
+        System.out.println("It's known for its fiber content.");
+    }
+
+    // Implementation of the interface method (Abstraction)
+    @Override
+    public void prepareMainDish() {
+        System.out.println(getName() + " is being prepared for the main dish. " + PREP_NOTE);
+    }
+}
+
+```
+
+---
+
+###4. Main Class: DemonstrationFinally, a `Main` class to put all the pieces together and demonstrate **Polymorphism**.
+
+```java
+public class FoodSystemDemo {
+    public static void main(String[] args) {
+        System.out.println("====== Food System Demonstration ======\n");
+
+        // 4. Polymorphism: We can store objects of different subclasses
+        // in an array of the base class type (FoodItem).
+        FoodItem[] myPantry = new FoodItem[3];
+        myPantry[0] = new Fruit("Apple", 52.0, true);
+        myPantry[1] = new Meat("Beef Loin", 250.0, "Steak");
+        myPantry[2] = new Vegetable("Carrot", 41.0, "Orange");
+
+        for (FoodItem item : myPantry) {
+            // Polymorphism in action:
+            // The correct describeFoodType() is called based on the *actual*
+            // type of the object at runtime (Fruit, Meat, or Vegetable).
+            item.printNutritionInfo();
+            item.describeFoodType();
+
+            // Demonstrate type checking and casting for specific behaviors
+            if (item instanceof Meat) {
+                ((Meat) item).cook();
+            } else if (item instanceof MainComponent) {
+                // Demonstrate using the Interface method
+                ((MainComponent) item).prepareMainDish();
+            }
+
+            System.out.println("----------------------------------------");
+        }
+    }
+}
+
+```
+
+###Output of `FoodSystemDemo````
+====== Food System Demonstration ======
+
+--- Apple ---
+Calories (per 100g): 52.0
+Is Vegetarian: Yes
+Apple is a type of **Fruit**.
+It's typically consumed as a snack or dessert.
+----------------------------------------
+--- Beef Loin ---
+Calories (per 100g): 250.0
+Is Vegetarian: No
+Beef Loin is a type of **Meat**.
+It is a primary source of protein.
+Beef Loin is being cooked using a high-heat method.
+----------------------------------------
+--- Carrot ---
+Calories (per 100g): 41.0
+Is Vegetarian: Yes
+Carrot is a type of **Vegetable**.
+It's known for its fiber content.
+Carrot is being prepared for the main dish. Requires washing and chopping.
+----------------------------------------
+
+```
+
+---
+
+###Summary of OOP Principles Used| OOP Pillar | Concept in Example |
+| --- | --- |
+| **Inheritance** | `Fruit`, `Meat`, and `Vegetable` classes *extend* the `FoodItem` class. |
+| **Encapsulation** | Fields like `name` and `caloriesPer100g` are `private` and accessed only via `public` getters and setters. |
+| **Polymorphism** | The abstract method `describeFoodType()` is implemented differently in each subclass. When iterating through `FoodItem[] myPantry`, the correct implementation is called. |
+| **Abstraction** | `FoodItem` is an `abstract` class, hiding implementation details. The `MainComponent` is an **interface**, defining a public contract without implementation. |

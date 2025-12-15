@@ -1,0 +1,142 @@
+
+
+##🎬 OOP Java Code with ArrayListThe solution is divided into two main classes:
+
+1. **`Movie`**: The blueprint (class) for a single movie object.
+2. **`MovieList`**: The class containing the `main` method to demonstrate creating, adding, and displaying `Movie` objects using an `ArrayList`.
+
+---
+
+###1. The `Movie` Class (The Object Blueprint)This class represents the data and behavior of a single movie.
+
+```java
+public class Movie {
+    // 1. Attributes (Data/State)
+    private String title;
+    private String genre;
+    private int releaseYear;
+    private double rating;
+
+    // 2. Constructor (To initialize the object)
+    public Movie(String title, String genre, int releaseYear, double rating) {
+        this.title = title;
+        this.genre = genre;
+        this.releaseYear = releaseYear;
+        this.rating = rating;
+    }
+
+    // 3. Methods (Behaviors/Getters) - Standard way to access private fields
+    public String getTitle() {
+        return title;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    // 4. Overriding the toString() method for easy printing of object details
+    @Override
+    public String toString() {
+        return "Title: " + title + " | Genre: " + genre + 
+               " | Year: " + releaseYear + " | Rating: " + rating;
+    }
+}
+
+```
+
+---
+
+###2. The `MovieList` Class (The Manager/Main)This class demonstrates how to use the `Movie` class and manage multiple `Movie` objects using a **`java.util.ArrayList`**.
+
+```java
+import java.util.ArrayList; // Import the ArrayList class
+
+public class MovieList {
+    
+    public static void main(String[] args) {
+        // Create an ArrayList to hold Movie objects
+        // The type parameter <Movie> ensures only Movie objects can be stored.
+        ArrayList<Movie> movieCollection = new ArrayList<>();
+        
+        // 1. Create Movie objects
+        Movie movie1 = new Movie("Inception", "Sci-Fi", 2010, 8.8);
+        Movie movie2 = new Movie("The Shawshank Redemption", "Drama", 1994, 9.3);
+        Movie movie3 = new Movie("Parasite", "Thriller", 2019, 8.5);
+        
+        // 2. Add Movie objects to the ArrayList
+        movieCollection.add(movie1);
+        movieCollection.add(movie2);
+        movieCollection.add(movie3);
+        
+        // --- Demonstration ---
+        
+        // 3. Print the size of the collection
+        System.out.println("--- Movie Collection Status ---");
+        System.out.println("Total Movies in List: " + movieCollection.size());
+        
+        // 4. Access and print a specific movie using its index (e.g., the first movie)
+        System.out.println("\nFirst Movie (Index 0):");
+        // We call the toString() method implicitly when printing the object
+        System.out.println(movieCollection.get(0)); 
+        
+        // 5. Iterate and print all movies
+        System.out.println("\n--- Full Movie List ---");
+        for (Movie movie : movieCollection) {
+            System.out.println(movie);
+        }
+        
+        // 6. Demonstrate a common OOP task: filtering by genre
+        System.out.println("\n--- Movies by Genre: Sci-Fi ---");
+        for (Movie movie : movieCollection) {
+            if (movie.getGenre().equals("Sci-Fi")) {
+                System.out.println(movie.getTitle() + " (" + movie.getReleaseYear() + ")");
+            }
+        }
+        
+        // 7. Remove an object (e.g., the second movie)
+        movieCollection.remove(1); // Removing "The Shawshank Redemption"
+        
+        System.out.println("\n--- List After Removal ---");
+        System.out.println("Total Movies in List: " + movieCollection.size());
+        for (Movie movie : movieCollection) {
+            System.out.println(movie.getTitle());
+        }
+    }
+}
+
+```
+
+---
+
+##💻 OutputWhen you compile and run the `MovieList` class, you will see the following output:
+
+```
+--- Movie Collection Status ---
+Total Movies in List: 3
+
+First Movie (Index 0):
+Title: Inception | Genre: Sci-Fi | Year: 2010 | Rating: 8.8
+
+--- Full Movie List ---
+Title: Inception | Genre: Sci-Fi | Year: 2010 | Rating: 8.8
+Title: The Shawshank Redemption | Genre: Drama | Year: 1994 | Rating: 9.3
+Title: Parasite | Genre: Thriller | Year: 2019 | Rating: 8.5
+
+--- Movies by Genre: Sci-Fi ---
+Inception (2010)
+
+--- List After Removal ---
+Total Movies in List: 2
+Inception
+Parasite
+
+```
+
