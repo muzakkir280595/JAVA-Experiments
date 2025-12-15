@@ -1,0 +1,171 @@
+package Full_OOP_Exercises.Games.gameSimulation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 1. Base Class (Abstraction & Inheritance)
+ * Defines the core properties and behaviors of any character in the game.
+ */
+abstract class GameCharacter {
+    // Encapsulation: Properties are private, accessed via public methods
+    private String name;
+    private int health;
+    private int attackPower;
+
+    public GameCharacter(String name, int health, int attackPower) {
+        this.name = name;
+        this.health = health;
+        this.attackPower = attackPower;
+    }
+
+    // Abstract method (Polymorphism):
+    // Subclasses MUST implement their unique attack logic.
+    public abstract String attack(); 
+
+    // General method
+    public void takeDamage(int damage) {
+        this.health -= damage;
+        if (this.health < 0) {
+            this.health = 0;
+        }
+        System.out.println(name + " takes " + damage + " damage. Remaining Health: " + this.health);
+    }
+
+    // Getters for public access
+    public String getName() {
+        return name;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getAttackPower() {
+        return attackPower;
+    }
+}
+
+/**
+ * 2. Subclass 1: Warrior (Inheritance)
+ * Specializes the GameCharacter for close combat.
+ */
+class Warrior extends GameCharacter {
+    private boolean isBlocking;
+
+    public Warrior(String name) {
+        // Calls the constructor of the base class (GameCharacter)
+        super(name, 150, 20); 
+        this.isBlocking = false;
+    }
+
+    // Polymorphism: Specific implementation for Warrior's attack
+    @Override
+    public String attack() {
+        return getName() + " slashes with a sword for " + getAttackPower() + " damage!";
+    }
+
+    // Warrior-specific behavior
+    public void setBlocking(boolean blocking) {
+        this.isBlocking = blocking;
+        System.out.println(getName() + (isBlocking ? " raises their shield!" : " lowers their shield."));
+    }
+}
+
+/**
+ * 3. Subclass 2: Mage (Inheritance)
+ * Specializes the GameCharacter for spellcasting.
+ */
+class Mage extends GameCharacter {
+    private int mana;
+
+    public Mage(String name) {
+        // Calls the constructor of the base class (GameCharacter)
+        super(name, 100, 15);
+        this.mana = 50; 
+    }
+
+    // Polymorphism: Specific implementation for Mage's attack
+    @Override
+    public String attack() {
+        if (mana >= 10) {
+            mana -= 10;
+            return getName() + " casts a Fireball spell for " + (getAttackPower() * 2) + " magical damage! (Mana left: " + mana + ")";
+        } else {
+            return getName() + " is out of mana and resorts to a weak staff hit.";
+        }
+    }
+}
+
+/**
+ * 4. Main Class (The Game Driver)
+ * Manages the collection of characters using an ArrayList.
+ */
+public class GameSimulation {
+    
+    public static void main(String[] args) {
+        
+        // --- ArrayList Usage ---
+        // Create an ArrayList to hold all character objects.
+        // The list is of type GameCharacter, allowing it to hold both Warrior and Mage (Polymorphism).
+        List<GameCharacter> roster = new ArrayList<>();
+
+        // Create and add characters to the ArrayList
+        roster.add(new Warrior("Sir Kael"));
+        roster.add(new Mage("Elara"));
+        roster.add(new Warrior("Grom"));
+        
+        System.out.println("--- 🌍 Game Roster Initialized ---");
+        System.out.println("Total Characters in Roster: " + roster.size());
+        
+        // --- Game Actions and Polymorphism Demonstration ---
+        
+        // 1. Looping through the ArrayList
+        System.out.println("\n--- 📝 Character Roster Details ---");
+        for (GameCharacter character : roster) {
+            // Because of Polymorphism, we can call the attack() method 
+            // on the base type (GameCharacter), and Java calls the correct 
+            // implementation (Warrior's attack or Mage's attack).
+            System.out.println(character.getName() + 
+                               " | Type: " + character.getClass().getSimpleName() + 
+                               " | Health: " + character.getHealth() + 
+                               " | Attack: " + character.attack());
+        }
+
+        // 2. Direct Interaction / Combat Simulation
+        
+        // Retrieve specific characters from the ArrayList
+        GameCharacter warrior = roster.get(0); // Sir Kael
+        GameCharacter mage = roster.get(1);   // Elara
+
+        System.out.println("\n--- ⚔️ Combat Simulation: " + warrior.getName() + " vs " + mage.getName() + " ---");
+        
+        // Warrior attacks the Mage
+        System.out.println(warrior.getName() + " prepares to attack...");
+        mage.takeDamage(warrior.getAttackPower()); // Mage takes damage
+
+        // Mage attacks the Warrior (using the stronger spell)
+        System.out.println(mage.getName() + " retaliates...");
+        // Mage's attack is polymorphic. The attack method internally calculates the damage (30 for Mage).
+        int mageDamage = ((Mage) mage).getAttackPower() * 2; 
+        System.out.println(((Mage) mage).attack());
+        warrior.takeDamage(mageDamage); // Warrior takes damage
+        
+        // 3. Class-Specific Behavior
+        Warrior specificWarrior = (Warrior) warrior; // Downcasting to access specific method
+        specificWarrior.setBlocking(true); // Call a method only available in the Warrior class
+
+        // 4. Final Status
+        System.out.println("\n--- ✅ Simulation Complete ---");
+        System.out.println(warrior.getName() + " Final Health: " + warrior.getHealth());
+        System.out.println(mage.getName() + " Final Health: " + mage.getHealth());
+        
+        // 5. Array List Operation (Removal)
+        // Check if a character is defeated and remove them
+        if (mage.getHealth() <= 0) {
+            roster.remove(mage);
+            System.out.println("\n" + mage.getName() + " has been defeated and removed from the roster.");
+            System.out.println("Remaining Characters in Roster: " + roster.size());
+        }
+    }
+}
